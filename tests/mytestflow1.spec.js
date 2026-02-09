@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 test('Flow Test - Navyug Expense App', async ({ page }) => {
 
   // -------------------------------
-  // ✅ Login
+  //  Login
   // -------------------------------
   await page.goto('https://dev-navyugexpense.maxpro.cloud/account/login');
   await page.getByRole('textbox', { name: 'Please enter your Login ID' }).fill('vikramb');
@@ -11,17 +11,17 @@ test('Flow Test - Navyug Expense App', async ({ page }) => {
   await page.getByRole('button', { name: 'Login' }).click();
 
   // -------------------------------
-  // ✅ Create Expense Request
+  //  Create Expense Request
   // -------------------------------
   await page.getByRole('listitem').filter({ hasText: 'Expense Expense' }).locator('a').first().click();
   await page.getByRole('link', { name: 'Expense Request' }).click();
   await page.getByRole('button', { name: '+ ADD' }).click();
 
-  // 🔢 Generate and use random Bill No
+  //  Generate and use random Bill No
   const billNo = Math.floor(100000 + Math.random() * 900000).toString();
   await page.getByRole('textbox', { name: 'Default TextBox' }).fill(billNo);
 
-  // ⏳ Fill form details
+  //  Fill form details
   await page.locator('form').getByRole('button').click();
   await page.getByText('7', { exact: true }).first().click();
   await page.getByText('Expense Type Transport').click();
@@ -31,45 +31,45 @@ test('Flow Test - Navyug Expense App', async ({ page }) => {
   await page.getByText('Type Per KG Per Box Lumpsum').click();
   await page.getByRole('option', { name: 'Per KG' }).click();
 
-  // 🔢 Enter spinner input values
+  //  Enter spinner input values
   await page.locator('.rz-spinner-input').nth(1).fill('100');
   await page.locator('.rz-spinner-input').nth(2).fill('10');
 
-  // ➕ Add and Submit Expense
+  //  Add and Submit Expense
   await page.getByRole('button', { name: '+ ADD' }).click();
   await page.getByRole('button', { name: 'SUBMIT' }).click();
   await page.waitForTimeout(1000);
 
   // -------------------------------
-  // ✅ Navigate to Approval Screen
+  //  Navigate to Approval Screen
   // -------------------------------
   await page.getByRole('listitem').filter({ hasText: 'Expense Expense' }).locator('a').first().click();
   await page.getByRole('link', { name: 'Approval' }).click();
 
   // -------------------------------
-  // ❌ Reject the Created Expense
+  //  Reject the Created Expense
   // -------------------------------
   await page.locator('//tbody/tr[1]/td[11]/span[1]/div[1]/img[1]').click();
   await page.getByRole('button', { name: 'REJECT' }).click();
   await page.locator('textarea').fill('test1');
   await page.getByLabel('Confirmation').getByRole('button', { name: 'REJECT' }).click();
-  console.log('❌ Rejected Request');
+  console.log(' Rejected Request');
 
   // -------------------------------
-  // ✅ Approve the Same Expense
+  //  Approve the Same Expense
   // -------------------------------
   await page.locator('//tbody/tr[1]/td[11]/span[1]/div[1]/img[1]').click();
   await page.getByRole('button', { name: 'APPROVE' }).click();
   await page.getByRole('button', { name: 'Confirm' }).click();
-  console.log('✅ Approved Request');
+  console.log(' Approved Request');
 
   // -------------------------------
-  // 🔄 Mark as "To be Revised"
+  //  Mark as "To be Revised"
   // -------------------------------
   await page.locator('//tbody/tr[1]/td[11]/span[1]/div[1]/img[1]').click();
   await page.locator('textarea').fill('Test for Revised');
   await page.getByRole('button', { name: 'SUBMIT' }).click();
-  console.log('🔄 Expense Request To be Revised');
+  console.log(' Expense Request To be Revised');
 
   // -------------------------------
   // ⏸ Pause for Debug

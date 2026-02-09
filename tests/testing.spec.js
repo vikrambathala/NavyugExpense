@@ -32,10 +32,10 @@ async function selectRandomDropdownOption(page, dropdownLabel) {
     try {
       await option.scrollIntoViewIfNeeded();
       await option.click({ timeout: 2000 });
-      console.log(`✅ Selected option: ${selectedText}`);
+      console.log(` Selected option: ${selectedText}`);
       return selectedText.trim();
     } catch (e) {
-      console.log(`⚠️ Attempt ${attempt} failed for ${selectedText}, retrying...`);
+      console.log(` Attempt ${attempt} failed for ${selectedText}, retrying...`);
       if (attempt === 3) throw e;
     }
   }
@@ -47,7 +47,7 @@ test('Login Test - Navyug Expense App (using roles)', async ({ page }) => {
   await page.getByRole('textbox', { name: 'Please enter your Login ID' }).fill('vikramb');
   await page.getByRole('textbox', { name: 'Enter your password' }).fill('Welcome@123');
   await page.getByRole('button', { name: 'Login' }).click();
-  console.log("✅ Login successful");
+  console.log(" Login successful");
 
   // Navigate to Expense Request
   await page.locator('p', { hasText: 'Expense' }).first().hover();
@@ -61,7 +61,7 @@ test('Login Test - Navyug Expense App (using roles)', async ({ page }) => {
   await page.locator('button.rz-datepicker-trigger').click();
   await expect(page.locator('.rz-calendar')).toBeVisible();
   await page.locator('.rz-datepicker-currentday').click();
-  console.log("✅ Current date selected");
+  console.log(" Current date selected");
 
   // Select random Expense Type
   const selected = await selectRandomDropdownOption(page, 'Expense Type');
@@ -69,22 +69,22 @@ test('Login Test - Navyug Expense App (using roles)', async ({ page }) => {
   // Conditional actions based on selection
   switch (selected) {
     case "Office":
-      console.log("🏢 Office flow");
+      console.log(" Office flow");
       await page.fill('input[placeholder="Enter Office Bill Number"]', "OFF-" + Date.now());
       break;
 
     case "Transport":
-      console.log("🚛 Transport flow");
+      console.log(" Transport flow");
       await page.fill('input[placeholder="Enter Vehicle Number"]', "TN-" + Math.floor(Math.random() * 9999));
       break;
 
     case "Loading & Unloading":
-      console.log("📦 Loading & Unloading flow");
+      console.log(" Loading & Unloading flow");
       await page.fill('input[placeholder="Enter Loading Ref No"]', "LD-" + Date.now());
       break;
 
     default:
-      console.log(`ℹ️ No specific flow for: ${selected}`);
+      console.log(` No specific flow for: ${selected}`);
       break;
   }
 });

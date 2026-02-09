@@ -18,15 +18,6 @@ test('Payment Process', async ({ page }) => {
   await page.getByRole('button', { name: /\+ ADD PAYMENT GROUP/i }).click();
 
   // -------------------------------
-  // Check for "No records to display."
-  // -------------------------------
-  const noRecordsMsg = page.getByText('No records to display.');
-  if (await noRecordsMsg.isVisible({ timeout: 5000 }).catch(() => false)) {
-    console.log('⚠️  No records to display.');
-    return; // Stop test here
-  }
-
-  // -------------------------------
   // Select invoice row ending with '-2526'
   // -------------------------------
   const targetRow = page.locator('tr.rz-data-row', { hasText: '-2526' }).first();
@@ -80,11 +71,19 @@ test('Payment Process', async ({ page }) => {
   await page.getByText('10', { exact: true }).click();
 
   const textBox = page.getByRole('textbox', { name: 'Default TextBox' });
-  await page.waitForSelector('tr.rz-data-row');
+  // Wait for rows to load
+await page.waitForSelector('tr.rz-data-row');
 
-  const expenseNumberLocator = page.locator('tr.rz-data-row span.rz-cell-data[title*="-"]');
-  const expNumber = (await expenseNumberLocator.first().textContent())?.trim();
-  console.log(' Expense Number:', expNumber);
+//  Locate the <span> that contains the Expense Number pattern (e.g. 00336-2526)
+const expenseNumberLocator = page.locator('tr.rz-data-row span.rz-cell-data[title*="-"]');
+
+// Get the visible text
+const expNumber = (await expenseNumberLocator.first().textContent())?.trim();
+
+// Print it
+console.log(' Expense Number:', expNumber);
+
+
 
   // Fill random 8-digit number
   const randomNumber = Math.floor(10000000 + Math.random() * 90000000).toString();
